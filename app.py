@@ -142,7 +142,6 @@ with col_chart1:
         "Volume (Juta KL)": [round(vol_pertalite/1e6, 2), round(vol_solar/1e6, 2), round(vol_mitan/1e6, 2)]
     })
     
-    # Diubah menjadi Altair statis tanpa .interactive() agar tidak bisa di-scroll
     chart_vol = alt.Chart(df_vol).mark_bar(color='#3b71ca').encode(
         x=alt.X("Jenis BBM:N", sort=None, title=""),
         y=alt.Y("Volume (Juta KL):Q"),
@@ -165,7 +164,6 @@ with col_chart2:
         range=["#ff4b4b", "#2ecc71", "#ff9900"]  
     )
     
-    # Grafik statis tanpa .interactive()
     chart_fin = alt.Chart(df_fin).mark_bar().encode(
         x=alt.X("Komponen:N", sort=None, title=""),
         y=alt.Y("Nilai (Triliun Rp):Q"),
@@ -177,3 +175,15 @@ with col_chart2:
 
 st.divider()
 st.info(f"🚨 **KESIMPULAN SKENARIO EKSTREM:** Jika harga minyak mentah benar-benar menyentuh **USD {icp_skenario_input}/barel**, ketahanan fiskal RAPBN 2026 akan terbebani tambahan defisit hingga **Rp {fmt_id(total_defisit_skenario)} Triliun**.")
+
+# --- FOOTER SIGNATURE ---
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style='text-align: center; color: gray;'>
+        <h4>💡 Semua Bisa Dihitung</h4>
+        <p>by Alif Towew</p>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
