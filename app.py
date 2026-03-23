@@ -141,7 +141,15 @@ with col_chart1:
         "Jenis BBM": ["Pertalite", "Solar Subsidi", "Minyak Tanah"],
         "Volume (Juta KL)": [round(vol_pertalite/1e6, 2), round(vol_solar/1e6, 2), round(vol_mitan/1e6, 2)]
     })
-    st.bar_chart(df_vol.set_index("Jenis BBM"))
+    
+    # Diubah menjadi Altair statis tanpa .interactive() agar tidak bisa di-scroll
+    chart_vol = alt.Chart(df_vol).mark_bar(color='#3b71ca').encode(
+        x=alt.X("Jenis BBM:N", sort=None, title=""),
+        y=alt.Y("Volume (Juta KL):Q"),
+        tooltip=[alt.Tooltip("Jenis BBM:N"), alt.Tooltip("Volume (Juta KL):Q")]
+    )
+    
+    st.altair_chart(chart_vol, use_container_width=True)
 
 with col_chart2:
     st.subheader("Beban vs Pendapatan per $1 (Triliun Rp)")
@@ -157,14 +165,15 @@ with col_chart2:
         range=["#ff4b4b", "#2ecc71", "#ff9900"]  
     )
     
-    chart = alt.Chart(df_fin).mark_bar().encode(
+    # Grafik statis tanpa .interactive()
+    chart_fin = alt.Chart(df_fin).mark_bar().encode(
         x=alt.X("Komponen:N", sort=None, title=""),
         y=alt.Y("Nilai (Triliun Rp):Q"),
         color=alt.Color("Kategori:N", scale=color_scale, legend=None),
         tooltip=[alt.Tooltip("Komponen:N"), alt.Tooltip("Nilai (Triliun Rp):Q")]
     )
     
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart_fin, use_container_width=True)
 
 st.divider()
 st.info(f"🚨 **KESIMPULAN SKENARIO EKSTREM:** Jika harga minyak mentah benar-benar menyentuh **USD {icp_skenario_input}/barel**, ketahanan fiskal RAPBN 2026 akan terbebani tambahan defisit hingga **Rp {fmt_id(total_defisit_skenario)} Triliun**.")
